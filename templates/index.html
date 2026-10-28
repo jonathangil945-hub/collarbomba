@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- ============ HERO ============ -->
+<header id="inicio" class="hero">
+  <div class="scanlines"></div>
+  <p class="hero-kicker">EXPEDIENTE ABIERTO · ERIE, PENSILVANIA · 28 DE AGOSTO DE 2003</p>
+  <h1 class="glitch" data-text="COLLAR BOMBA">COLLAR BOMBA</h1>
+  <p class="hero-sub">
+    Uno de los casos más extraños de la historia del FBI.<br>
+    Un repartidor de pizza, un banco y una pregunta que todavía no tiene respuesta definitiva.
+  </p>
+
+  <div class="hero-clock" aria-label="15:18">
+    <span>15</span><span class="colon">:</span><span>18</span>
+  </div>
+
+  <a href="#reloj" class="btn btn-red">Abrir el expediente ↓</a>
+
+  <p class="aviso">
+    Caso real. Esta página es informativa y respetuosa con la víctima;
+    no contiene detalles técnicos sobre el dispositivo.
+  </p>
+</header>
+
+<main>
+
+<!-- ============ RELOJ DEL CASO ============ -->
+<section id="reloj" class="seccion reveal">
+  <h2>El reloj del caso</h2>
+  <p class="intro">
+    Arrastra el control y revive la tarde del 28 de agosto minuto a minuto.
+    Las horas con <b>~</b> son aproximadas; la de la explosión es la única exacta.
+  </p>
+
+  <div class="reloj-card" id="reloj-card" data-total="{{ total_min }}">
+    <div class="reloj-top">
+      <div class="digital" id="digital">13:30</div>
+      <button class="btn btn-ghost" id="btn-play">▶ Reproducir</button>
+    </div>
+
+    <input type="range" id="slider" min="0" max="{{ total_min }}" value="0" step="1"
+           aria-label="Línea de tiempo del caso">
+    <div class="slider-marks" id="marks"></div>
+
+    <div class="evento-panel" id="evento-panel" aria-live="polite"></div>
+
+    <ol class="timeline" id="timeline">
+      {% for e in eventos %}
+      <li data-min="{{ e.min }}">
+        <span class="t-icono">{{ e.icono }}</span>
+        <div>
+          <span class="t-hora">{% if e.aprox %}~{% endif %}{{ e.hora }}</span>
+          <strong>{{ e.titulo }}</strong>
+        </div>
+      </li>
+      {% endfor %}
+    </ol>
+  </div>
+  <script type="application/json" id="data-eventos">{{ eventos|tojson }}</script>
+</section>
+
+<!-- ============ TABLERO ============ -->
+<section id="tablero" class="seccion reveal">
+  <h2>Tablero de evidencias</h2>
+  <p class="intro">
+    Pasa el cursor (o toca) una ficha para iluminar sus conexiones.
+    Las líneas punteadas son vínculos que siguen en disputa.
+  </p>
+
+  <div class="board" id="board">
+    <svg id="hilos" class="hilos" aria-hidden="true"></svg>
+  </div>
+
+  <article class="detalle" id="detalle">
+    <p class="detalle-vacio">Selecciona una ficha para leer su resumen.</p>
+  </article>
+</section>
+
+<!-- ============ EXPEDIENTE ============ -->
+<section id="expediente" class="seccion reveal">
+  <h2>Expediente confidencial</h2>
+  <p class="intro">Toca cada barra negra para desclasificar el dato.</p>
+
+  <div class="expediente">
+    <div class="sello">DESCLASIFICADO</div>
+    <ul class="datos">
+      <li><span class="etiqueta">Botín:</span>
+        <span class="redactado" role="button" tabindex="0">8.702 dólares en una bolsa</span></li>
+      <li><span class="etiqueta">Arma:</span>
+        <span class="redactado" role="button" tabindex="0">un arma disfrazada de bastón</span></li>
+      <li><span class="etiqueta">Notas:</span>
+        <span class="redactado" role="button" tabindex="0">instrucciones escritas para que Wells pareciera «solo un rehén» (según la acusación)</span></li>
+      <li><span class="etiqueta">Móvil:</span>
+        <span class="redactado" role="button" tabindex="0">conseguir dinero para pagar el asesinato del padre de Diehl-Armstrong (según la fiscalía)</span></li>
+      <li><span class="etiqueta">Hallazgo:</span>
+        <span class="redactado" role="button" tabindex="0">el cuerpo de James Roden en un congelador, cerca de la torre de TV</span></li>
+      <li><span class="etiqueta">Acusación federal:</span>
+        <span class="redactado" role="button" tabindex="0">2007 · Diehl-Armstrong y Barnes; Wells nombrado como participante</span></li>
+      <li><span class="etiqueta">Veredicto:</span>
+        <span class="redactado" role="button" tabindex="0">2010 · Diehl-Armstrong condenada; Barnes ya se había declarado culpable</span></li>
+      <li><span class="etiqueta">Lo que nadie sabe:</span>
+        <span class="redactado" role="button" tabindex="0">por qué Wells se involucró, según reconocieron las propias autoridades</span></li>
+    </ul>
+    <button class="btn btn-ghost" id="btn-revelar">Revelar todo</button>
+  </div>
+</section>
+
+<!-- ============ DEBATE ============ -->
+<section id="debate" class="seccion reveal">
+  <h2>¿Víctima o participante?</h2>
+  <p class="intro">Dos lecturas del mismo caso. Revisa las pruebas y emite tu voto.</p>
+
+  <div class="duelo">
+    <div class="lado lado-a">
+      <h3>«Me obligaron»</h3>
+      <ul>
+        <li>Ante la policía, Wells aseguró que unos hombres lo forzaron a asaltar el banco.</li>
+        <li>Dijo repetidamente que el aparato iba a estallar.</li>
+        <li>Su familia siempre sostuvo su inocencia.</li>
+      </ul>
+    </div>
+    <div class="vs">VS</div>
+    <div class="lado lado-b">
+      <h3>«Sabía del plan»</h3>
+      <ul>
+        <li>La acusación federal de 2007 lo nombró como participante.</li>
+        <li>Los fiscales sostuvieron que le dijeron que el aparato era falso.</li>
+        <li>La fiscal federal lo describió a la vez como participante y víctima.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="votos">
+    <h3>Tu veredicto</h3>
+    <div class="voto-botones">
+      <button class="btn btn-ghost voto" data-op="victima">Víctima forzada</button>
+      <button class="btn btn-ghost voto" data-op="enganado">Participante engañado</button>
+      <button class="btn btn-ghost voto" data-op="incierto">No hay certeza</button>
+    </div>
+    <div class="barras" id="barras"></div>
+    <p class="nota" id="nota-voto"></p>
+  </div>
+</section>
+
+<!-- ============ QUIZ ============ -->
+<section id="quiz" class="seccion reveal">
+  <h2>Prueba de detective</h2>
+  <p class="intro">7 preguntas, 15 segundos cada una. ¿Cuánto retuviste del caso?</p>
+
+  <div class="quiz-card" id="quiz-card">
+    <div class="quiz-inicio" id="quiz-inicio">
+      <button class="btn btn-red" id="btn-quiz">Comenzar</button>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <p>
+    Fuentes:
+    <a href="https://www.fbi.gov/news/stories/2007/july/collar_071107" target="_blank" rel="noopener">FBI</a> ·
+    <a href="https://www.cbsnews.com/news/collar-bomb-bank-robbery-plot-brings-guilty-verdict-for-pa-woman/" target="_blank" rel="noopener">CBS News</a> ·
+    <a href="https://en.wikipedia.org/wiki/Pizza_bomber" target="_blank" rel="noopener">Wikipedia</a>
+  </p>
+  <p>Proyecto educativo hecho con Flask y Jinja2. En memoria de Brian Wells.</p>
+</footer>
+
+{% endblock %}

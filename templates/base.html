@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Collar Bomba · El caso del repartidor de pizza{% endblock %}</title>
+  <meta name="description" content="Expediente interactivo del caso del collar bomba de Erie (2003): reloj del caso, tablero de evidencias, debate y quiz.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;700&family=Special+Elite&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div id="luz" aria-hidden="true"></div>
+  <div id="flash" aria-hidden="true"></div>
+
+  <button id="btn-linterna" class="btn-flotante" aria-pressed="false" title="Activa la linterna para investigar a oscuras">
+    🔦 Modo linterna
+  </button>
+
+  <nav class="nav">
+    <a href="#inicio" class="logo">COLLAR<span>BOMBA</span></a>
+    <div class="nav-links">
+      <a href="#reloj">Reloj</a>
+      <a href="#tablero">Tablero</a>
+      <a href="#expediente">Expediente</a>
+      <a href="#debate">Debate</a>
+      <a href="#quiz">Quiz</a>
+    </div>
+  </nav>
+
+  {% block content %}{% endblock %}
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
